@@ -1,0 +1,2 @@
+# hexo-fast-cf
+blog
