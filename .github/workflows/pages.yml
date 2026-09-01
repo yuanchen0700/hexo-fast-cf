@@ -1,0 +1,36 @@
+name: Deploy _post to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 拉取仓库
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 把 _post 目录作为网站根目录
+      - name: Upload _post
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_post
+
+      # 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
